@@ -3,7 +3,7 @@
 // https://onestepcode.com/array-reference-performance-row-major-vs-column-major-order/
 
 [MemoryDiagnoser]
-public class FillArrayByRowOrColumnBenchmark
+public class FillArrayByRowOrColumnBenchmarks
 {
     [Params(5000)]
     public int N;
