@@ -6,24 +6,24 @@ using BenchmarkDotNet.Analysers;
 using BenchmarkDotNet.Exporters;
 using BenchmarkDotNet.Loggers;
 using BenchmarkDotNet.Running;
-using Xamarin.Forms;
+using BenchmarkXamarin.Runners;
 
 namespace BenchmarkXamarin
 {
     [DesignTimeVisible(false)]
-    public partial class MainPage : ContentPage
+    public partial class MainPage
     {
         public MainPage()
         {
             InitializeComponent();
         }
 
-        async void Button_Clicked(object sender, EventArgs e)
+        private async void Button_Clicked(object sender, EventArgs e)
         {
             await Start();
         }
 
-        async Task Start()
+        private async Task Start()
         {
             SetIsRunning(true);
             try
@@ -31,13 +31,15 @@ namespace BenchmarkXamarin
                 var logger = new AccumulationLogger();
                 await Task.Run(() =>
                 {
-                    var summary = BenchmarkRunner.Run<IntroBasic>();
+                    var summary = BenchmarkRunner.Run<EmptyBenchmarks>();
+
                     MarkdownExporter.Console.ExportToLog(summary, logger);
-                    ConclusionHelper.Print(logger,
-                            summary.BenchmarksCases
-                                   .SelectMany(benchmark => benchmark.Config.GetCompositeAnalyser().Analyse(summary))
-                                   .Distinct()
-                                   .ToList());
+                    ConclusionHelper.Print(
+                        logger,
+                        summary.BenchmarksCases
+                               .SelectMany(benchmark => benchmark.Config.GetCompositeAnalyser().Analyse(summary))
+                               .Distinct()
+                               .ToList());
                 });
                 SetSummary(logger.GetLog());
             }
@@ -51,13 +53,13 @@ namespace BenchmarkXamarin
             }
         }
 
-        void SetIsRunning(bool isRunning)
+        private void SetIsRunning(bool isRunning)
         {
             Indicator.IsRunning = isRunning;
             Run.IsVisible = Summary.IsVisible = !isRunning;
         }
 
-        void SetSummary(string text)
+        private void SetSummary(string text)
         {
             Summary.Text = text;
             var size = Summary.Measure(double.MaxValue, double.MaxValue).Request;
