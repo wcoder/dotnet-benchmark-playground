@@ -69,7 +69,7 @@
       <None Remove="BenchmarkDotNet" />
     </ItemGroup>
     <ItemGroup>
-      <PackageReference Include="BenchmarkDotNet" Version="0.13.2" />
+      <PackageReference Include="BenchmarkDotNet" Version="0.13.2.1966" />
     </ItemGroup>
 
     <!-- Android -->
